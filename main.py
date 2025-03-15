@@ -2,7 +2,7 @@ import asyncio
 import nest_asyncio
 from google import genai
 import json
-from flask import Flask, request, redirect, url_for, render_template
+from flask import Flask, request, redirect, url_for, send_from_directory
 
 # Apply the nest_asyncio patch
 nest_asyncio.apply()
@@ -183,7 +183,7 @@ def process_text():
 @app.route('/')
 def home():
     # Serve the frontend HTML
-    return render_template('index.html')
+    return send_from_directory('', 'index.html')
 
 
 if __name__ == '__main__':
