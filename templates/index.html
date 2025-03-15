@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cool Website Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #1e90ff;
+            margin-bottom: 20px;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            font-size: 1.5rem;
+            padding: 10px;
+            border: 2px solid #1e90ff;
+            border-radius: 8px;
+            width: 300px;
+            outline: none;
+        }
+
+        button {
+            font-size: 1.5rem;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #1e90ff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #4682b4;
+        }
+
+        #output {
+            font-size: 1.5rem;
+            color: #333;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        async function sendInput() {
+            const inputText = document.getElementById("textInput").value;
+            const outputElement = document.getElementById("output");
+
+            // Display the "Processing..." message
+            outputElement.innerText = "Processing...";
+
+            try {
+                const response = await fetch("/process", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text: inputText }),
+                });
+
+                // Redirect if the backend indicates so
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    const result = await response.json();
+                    outputElement.innerText = result.response; // Show the result
+                }
+            } catch (error) {
+                console.error("Error communicating with backend:", error);
+                outputElement.innerText = "An error occurred. Please try again.";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>COOL WEBSITE GENERATOR</h1>
+    <div class="input-container">
+        <input type="text" id="textInput" placeholder="Enter some text">
+        <button onclick="sendInput()">Send</button>
+    </div>
+    <p id="output"></p>
+</body>
+</html>
