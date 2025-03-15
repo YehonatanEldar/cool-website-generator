@@ -188,4 +188,4 @@ def home():
 
 if __name__ == '__main__':
     # Run Flask app
-    app.run(debug=True)
+    app.run(debug=False)
